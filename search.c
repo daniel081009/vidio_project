@@ -3,18 +3,6 @@
 
 const int usernamelen = 50;
 
-typedef struct {
-    User *u;
-    int distance;
-} UserSearchResult;
-
-
-#include "search.h"
-#include "hangul.h"
-
-const int usernamelen = 50;
-
-
 UserSearchResult *search_user_all(wchar_t keyword[1000], User *head, int *result_count) {
     int max = lenUser();
     UserSearchResult *results = (UserSearchResult *)malloc(max * sizeof(UserSearchResult));
@@ -43,4 +31,11 @@ UserSearchResult *search_user_all(wchar_t keyword[1000], User *head, int *result
 
     *result_count = i;
     return results;
+}
+
+
+int compare_results(const void *a, const void *b) {
+    UserSearchResult *result_a = (UserSearchResult *)a;
+    UserSearchResult *result_b = (UserSearchResult *)b;
+    return result_a->distance - result_b->distance; // 거리 낮은 순으로 정렬
 }

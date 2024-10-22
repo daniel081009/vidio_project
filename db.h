@@ -77,7 +77,6 @@ int vidio_last_uqid();
 int realvidio_last_uqid();
 int realvidiohistory_last_id();
 
-
 int lenUser();
 int createUser(wchar_t *name, wchar_t *address, char man, int birth_year);
 User *readUser(int uqid);

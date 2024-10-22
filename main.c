@@ -1,5 +1,7 @@
 #include "display.h"
 #include "db.h"
+#include "search.h"
+
 #include <locale.h>
 #include <windows.h>
 
@@ -76,9 +78,22 @@ void user_control() {
                 getchar();
             }
         }else if(s==2) { // 검색
+            wchar_t name[50];
+            input_View(L"검색어: ",name,50);
+            int reslen = 0;
+            UserSearchResult *res = search_user_all(name,userList,&reslen);
             
+            qsort(res, reslen, sizeof(UserSearchResult), compare_results);
+
+            wprintf(L"\n\n");
+            int displayed = 0;
+            while(displayed < 5 && res[displayed]== NULL) { //TODO: 이거알아서나중에작성 이제자러감
+                wprintf(L"%d\n이름: %ls\n주소:%ls\n성별:%c\n\n생년:%d\n - %ls\n", res[displayed].u->uqid,res[displayed].u->name,
+                                                                                res[displayed].u->address,res[displayed].u->man,res[displayed].u->birth_year);
+                displayed++;
+            }
         }else if (s==3) {
-             clearScreen();
+            clearScreen();
             int uqid;
             input_View_Int(L"삭제할 사용자 ID 입력", &uqid);
             int result = deleteUser(uqid);

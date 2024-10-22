@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "wchar.h": "c",
+        "locale.h": "c",
+        "stdlib.h": "c",
+        "pdcurses.h": "c",
+        "search.h": "c",
+        "phonebook.h": "c",
+        "unistd.h": "c",
+        "display.h": "c",
+        "string.h": "c",
+        "db.h": "c",
+        "stdarg.h": "c"
+    }
+}

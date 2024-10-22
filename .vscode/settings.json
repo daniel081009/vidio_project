@@ -11,6 +11,8 @@
         "display.h": "c",
         "string.h": "c",
         "db.h": "c",
-        "stdarg.h": "c"
+        "stdarg.h": "c",
+        "typeinfo": "c",
+        "hangul.h": "c"
     }
 }

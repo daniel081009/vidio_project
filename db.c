@@ -13,7 +13,7 @@ void loadData() {
         while (fgetws(line, sizeof(line)/sizeof(wchar_t), file)) {
             User *user = (User *)malloc(sizeof(User));
             int man;
-            if (swscanf(line, L"%d,%49[^,],%199[^,],%d,%d", &user->uqid, user->name, user->address, &man, &user->birth_year) == 5) {
+            if (swscanf(line, L"%d,%50[^,],%200[^,],%d,%d", &user->uqid, user->name, user->address, &man, &user->birth_year) == 5) {
                 user->man = (char)man;
                 user->next = userList;
                 userList = user;
@@ -186,15 +186,24 @@ int user_last_uqid() {
     }
     return max_uqid;
 }
+int lenUser() {
+    User *current = userList;
+    int index = 0;
+    while (current) {
+        index++;
+        current = current->next;
+    }
+    return index;
 
+}
 int createUser(wchar_t *name, wchar_t *address, char man, int birth_year) {
     User *user = (User *)malloc(sizeof(User));
     if (!user) return -1;
     user->uqid = user_last_uqid() + 1;
-    wcsncpy(user->name, name, 49);
-    user->name[49] = L'\0';
-    wcsncpy(user->address, address, 199);
-    user->address[199] = L'\0';
+    wcsncpy(user->name, name, 50);
+    user->name[50] = L'\0';
+    wcsncpy(user->address, address, 200);
+    user->address[200] = L'\0';
     user->man = man;
     user->birth_year = birth_year;
     user->next = userList;

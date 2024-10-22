@@ -28,7 +28,6 @@ void user_control() {
             input_View_Char(L"성별(0 또는 1)", &man);
             input_View_Int(L"출생 연도", &birth_year);
 
-
             int id = createUser(name,address,man,birth_year);
             wprintf(L"정상적으로 생성되었습니다. id=%d\n아무키나 누르세요",id);
             saveData();
@@ -39,14 +38,12 @@ void user_control() {
             input_View_Int(L"수정할 사용자 ID 입력", &uqid);
             User *user = readUser(uqid);
             if(user) {
-                // 현재 사용자 정보 표시
                 wprintf(L"현재 정보:\n");
                 wprintf(L"이름: %ls\n", user->name);
                 wprintf(L"주소: %ls\n", user->address);
                 wprintf(L"성별: %c\n", user->man);
                 wprintf(L"출생 연도: %d\n", user->birth_year);
 
-                // 새로운 정보 입력 (공백 입력 시 기존 값 유지)
                 wchar_t name[100];
                 wchar_t address[100];
                 char man;
@@ -57,7 +54,6 @@ void user_control() {
                 input_View_Char(L"새 성별(0 또는 1, 2입력시 기존 값 유지)", &man);
                 input_View_Int(L"새 출생 연도 (0 입력 시 기존 값 유지)", &birth_year);
 
-                // 입력된 값이 공백이 아니면 업데이트
                 if(wcslen(name) > 0) {
                     wcscpy(user->name, name);
                 }
@@ -80,7 +76,7 @@ void user_control() {
                 getchar();
             }
         }else if(s==2) { // 검색
-
+            
         }else if (s==3) {
              clearScreen();
             int uqid;

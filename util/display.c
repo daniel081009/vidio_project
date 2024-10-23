@@ -65,3 +65,7 @@ void input_View_Int(wchar_t prompt[100], int *output) {
     wchar_t buffer;
     while ((buffer = getwchar()) != '\n' && buffer != WEOF) {}
 }
+void print_formatted_date(time_t timestamp, wchar_t *formatted_date, size_t size) {
+    struct tm *tm_info = localtime(&timestamp);
+    wcsftime(formatted_date, size, L"%Y-%m-%d %H:%M:%S", tm_info);
+}

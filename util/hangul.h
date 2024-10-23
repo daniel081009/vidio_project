@@ -8,6 +8,7 @@
 #define JONGSUNG_COUNT 28
 
 #include <wctype.h>
+#include <wchar.h>
 
 extern wchar_t chosung[CHOSUNG_COUNT];
 extern wchar_t jungsung[JUNGSUNG_COUNT];

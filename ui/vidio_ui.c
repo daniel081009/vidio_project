@@ -1,5 +1,4 @@
 #include "vidio_ui.h"
-
 void vidio_ui() {
     while(1) {
         wchar_t title[50] = L"비디오 관리";
@@ -47,11 +46,14 @@ void vidio_ui() {
             int vidio_id;
             input_View_Int(L"수정할 비디오 ID 입력", &vidio_id);
             Vidio *vidio = readVidio(vidio_id);
+            wchar_t formatted_date[100];
+            print_formatted_date(vidio->create_date, formatted_date, 100);
+
             if (vidio) {
                 wprintf(L"현재 정보:\n");
                 wprintf(L"이름: %ls\n", vidio->name);
                 wprintf(L"설명: %ls\n", vidio->desc);
-                wprintf(L"생성 날짜: %ld\n", vidio->create_date);
+                wprintf(L"생성 날짜: %ls\n",formatted_date);
                 wprintf(L"장르:\n");
                 wprintf(L"  공포: %d\n", vidio->pos.horror);
                 wprintf(L"  코미디: %d\n", vidio->pos.comedy);
@@ -119,73 +121,36 @@ void vidio_ui() {
         } else if (s == 3) { // 비디오 리스트
             clearScreen();
             Vidio *current = vidioList;
-            while (current) {
-                wprintf(L"ID: %d\n이름: %ls\n설명: %ls\n생성 날짜: %ld\n", 
-                        current->id, current->name, current->desc, current->create_date);
-                wprintf(L"장르:\n");
-                wprintf(L"  공포: %d\n", current->pos.horror);
-                wprintf(L"  코미디: %d\n", current->pos.comedy);
-                wprintf(L"  액션: %d\n", current->pos.action);
-                wprintf(L"  SF: %d\n", current->pos.sf);
-                wprintf(L"  판타지: %d\n", current->pos.fantasy);
-                wprintf(L"  로맨스: %d\n", current->pos.romance);
-                wprintf(L"  가족: %d\n", current->pos.family);
-                wprintf(L"----\n\n");
-                current = current->next;
-            }
-            wprintf(L"아무 키나 누르세요.");
-            getchar();
 
-        } else if (s == 4) { // 재고 관리
-            clearScreen();
-            wchar_t inventory_title[50] = L"재고 관리";
-            wchar_t inventory_sel[][50] = {
-                L"재고 추가",
-                L"재고 삭제",
-                L"재고 리스트",
-                L"뒤로가기",
-            };
-            int inv_s = select_view(inventory_title, inventory_sel, 4);
-            if (inv_s == 0) { // 재고 추가
-                int vidio_id;
-                input_View_Int(L"재고를 추가할 비디오 ID 입력", &vidio_id);
-                int real_vidio_id = createRealVidio(vidio_id);
-                if (real_vidio_id != -1) {
-                    saveData();
-                    wprintf(L"재고가 추가되었습니다. Real_Vidio ID = %d\n", real_vidio_id);
-                } else {
-                    wprintf(L"재고 추가에 실패하였습니다.\n");
-                }
+            if (current == NULL) {
+                wprintf(L"비디오 리스트가 비어 있습니다.\n");
                 wprintf(L"아무 키나 누르세요.");
                 getchar();
-
-            } else if (inv_s == 1) { // 재고 삭제
-                int real_vidio_id;
-                input_View_Int(L"삭제할 재고의 Real_Vidio ID 입력", &real_vidio_id);
-                int result = deleteRealVidio(real_vidio_id);
-                if (result == 0) {
-                    saveData();
-                    wprintf(L"재고가 삭제되었습니다.\n");
-                } else {
-                    wprintf(L"재고를 삭제할 수 없습니다.\n");
-                }
-                wprintf(L"아무 키나 누르세요.");
-                getchar();
-
-            } else if (inv_s == 2) { // 재고 리스트
-                Real_Vidio *current = realVidioList;
+            } else {
                 while (current) {
-                    wprintf(L"Real_Vidio ID: %d\n비디오 ID: %d\n생성 날짜: %ld\n사용 중: %s\n",
-                            current->id, current->vidio_id, current->create_date, current->useing ? L"예" : L"아니오");
+                    wchar_t formatted_date[100];
+                    print_formatted_date(current->create_date, formatted_date, 100);
+
+                    wprintf(L"ID: %d\n이름: %ls\n설명: %ls\n생성 날짜: %ls\n", 
+                            current->id, current->name, current->desc, formatted_date);
+                    wprintf(L"장르:\n");
+                    wprintf(L"  공포: %d\n", current->pos.horror);
+                    wprintf(L"  코미디: %d\n", current->pos.comedy);
+                    wprintf(L"  액션: %d\n", current->pos.action);
+                    wprintf(L"  SF: %d\n", current->pos.sf);
+                    wprintf(L"  판타지: %d\n", current->pos.fantasy);
+                    wprintf(L"  로맨스: %d\n", current->pos.romance);
+                    wprintf(L"  가족: %d\n", current->pos.family);
                     wprintf(L"----\n\n");
                     current = current->next;
                 }
                 wprintf(L"아무 키나 누르세요.");
                 getchar();
-            } else {
-                // 뒤로가기
             }
-        }else if(s==5){
+
+        } else if (s == 4) { // 재고 관리
+            real_vidio_ui();
+        }else if(s==5){ // 대여기록, 히스토리 관련
 
         } else {
             break; // 뒤로가기

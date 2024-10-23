@@ -19,8 +19,7 @@ void user_ui() {
             wchar_t address[100];
             char man;
             int birth_year;
-
-
+            
             input_View(L"이름", name,sizeof(name) / sizeof(wchar_t));
             input_View(L"주소", address, sizeof(address) / sizeof(wchar_t));
             input_View_Char(L"성별(0 또는 1)", &man);

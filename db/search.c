@@ -33,9 +33,8 @@ UserSearchResult *search_user_all(wchar_t keyword[1000], User *head, int *result
     return results;
 }
 
-
 int compare_results(const void *a, const void *b) {
     UserSearchResult *result_a = (UserSearchResult *)a;
     UserSearchResult *result_b = (UserSearchResult *)b;
-    return result_a->distance - result_b->distance; // 거리 낮은 순으로 정렬
+    return result_a->distance - result_b->distance;
 }

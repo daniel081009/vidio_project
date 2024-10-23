@@ -7,7 +7,8 @@
 #include <wchar.h>
 #include <stdarg.h>
 #include <locale.h>
-
+#include <conio.h>
+#include <time.h>
 
 #define UP 72
 #define DOWN 80
@@ -20,5 +21,7 @@ int select_view(wchar_t title[50], wchar_t array[][50], int size);
 void input_View(wchar_t prompt[100], wchar_t *output, size_t size); 
 void input_View_Char(wchar_t prompt[100], char *output);
 void input_View_Int(wchar_t prompt[100], int *output);
+
+void print_formatted_date(time_t timestamp, wchar_t *formatted_date, size_t size);
 
 #endif

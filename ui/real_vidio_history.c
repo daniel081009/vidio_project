@@ -27,7 +27,7 @@ void real_vidio_history_ui() {
                         wcscpy(formatted_return_date, L"반납되지 않음");
                     }
 
-                    wprintf(L"기록 ID: %d\n사용자 ID: %d\n비디오 ID: %d\n대여일: %ls\n반납일: %ls\n", 
+                    wprintf(L"기록 ID: %d\n사용자 ID: %d\n리얼비디오 ID: %d\n대여일: %ls\n반납일: %ls\n", 
                             current->id, current->use_user_id, current->real_vidio_id, formatted_borrowed_date, formatted_return_date);
                     wprintf(L"반납 여부: %s\n평점: %d\n", 
                             current->return_bool ? L"반납됨" : L"미반납", current->good);
@@ -55,7 +55,7 @@ void real_vidio_history_ui() {
                         wcscpy(formatted_return_date, L"반납되지 않음");
                     }
 
-                    wprintf(L"기록 ID: %d\n비디오 ID: %d\n대여일: %ls\n반납일: %ls\n", 
+                    wprintf(L"기록 ID: %d\n리얼비디오 ID: %d\n대여일: %ls\n반납일: %ls\n", 
                             current->id, current->real_vidio_id, formatted_borrowed_date, formatted_return_date);
                     wprintf(L"반납 여부: %s\n평점: %d\n", 
                             current->return_bool ? L"반납됨" : L"미반납", current->good);

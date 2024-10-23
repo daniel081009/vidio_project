@@ -188,9 +188,10 @@ void loadData() {
         char line[512];
         while (fgets(line, sizeof(line), file)) {
             Real_Vidio_History *history = (Real_Vidio_History *)malloc(sizeof(Real_Vidio_History));
-            if (sscanf(line, "%d\t%d\t%d\t%hhd\t%hhd\t%ld\t%ld",
+            if (sscanf(line, "%d\t%d\t%d\t%d\t%hhd\t%hhd\t%ld\t%ld",
                        &history->id,
                        &history->use_user_id,
+                       &history->vidio_id,
                        &history->real_vidio_id,
                        &history->return_bool,
                        &history->good,

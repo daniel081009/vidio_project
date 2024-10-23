@@ -42,7 +42,7 @@ void real_vidio_ui() {
             while (current) {
                 wchar_t formatted_date[100];
                 print_formatted_date(current->create_date, formatted_date, 100);
-                wprintf(L"ID: %d\n비디오 ID: %d\n생성 날짜: %ls\n사용 중: %s\n",
+                wprintf(L"ID: %d\n비디오 ID: %d\n생성 날짜: %ls\n대여여부: %s\n",
                         current->id, current->vidio_id, formatted_date, current->useing ? L"예" : L"아니오");
                 wprintf(L"----\n\n");
                 current = current->next;

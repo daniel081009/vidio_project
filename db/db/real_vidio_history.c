@@ -12,7 +12,7 @@ int realvidiohistory_last_id() {
     return max_id;
 }
 
-int createRealVidioHistory(int use_user_id, int real_vidio_id, char return_bool, char good, time_t borrowed_date, time_t return_date) {
+int createRealVidioHistory(int use_user_id, int real_vidio_id, int vidio_id, char return_bool){
     if (!readUser(use_user_id)) {
         wprintf(L"ID %d인 유저는 존재하지 않습니다.\n", use_user_id);
         return -1;
@@ -29,9 +29,10 @@ int createRealVidioHistory(int use_user_id, int real_vidio_id, char return_bool,
     history->use_user_id = use_user_id;
     history->real_vidio_id = real_vidio_id;
     history->return_bool = return_bool;
-    history->good = good;
-    history->borrowed_date = borrowed_date;
-    history->return_date = return_date;
+    history->vidio_id=vidio_id;
+    history->good = -1;
+    history->borrowed_date = time(NULL);
+    history->return_date = 0;
     history->next = historyList;
     historyList = history;
     return history->id;

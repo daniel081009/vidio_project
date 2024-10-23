@@ -5,7 +5,6 @@ void saveData() {
     if (file) {
         User *current = userList;
         while (current) {
-            // 쉼표 대신 탭을 사용
             fwprintf(file, L"%d\t%ls\t%ls\t%d\t%d\n", current->uqid, current->name, current->address, current->man, current->birth_year);
             current = current->next;
         }
@@ -16,7 +15,6 @@ void saveData() {
     if (file) {
         Position *current = positionList;
         while (current) {
-            // 쉼표 대신 탭을 사용
             fprintf(file, "%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
                     current->vidio_id,
                     current->horror,
@@ -35,7 +33,6 @@ void saveData() {
     if (file) {
         Vidio *current = vidioList;
         while (current) {
-            // 쉼표 대신 탭을 사용
             fwprintf(file, L"%d\t%ls\t%ls\t%ld\n", current->id, current->name, current->desc, current->create_date);
             current = current->next;
         }
@@ -46,7 +43,6 @@ void saveData() {
     if (file) {
         Real_Vidio *current = realVidioList;
         while (current) {
-            // 쉼표 대신 탭을 사용
             fprintf(file, "%d\t%d\t%ld\t%d\n", current->id, current->vidio_id, current->create_date, current->useing);
             current = current->next;
         }
@@ -57,10 +53,10 @@ void saveData() {
     if (file) {
         Real_Vidio_History *current = historyList;
         while (current) {
-            // 쉼표 대신 탭을 사용
-            fprintf(file, "%d\t%d\t%d\t%d\t%d\t%ld\t%ld\n",
+            fprintf(file, "%d\t%d\t%d\t%d\t%d\t%d\t%ld\t%ld\n",
                     current->id,
                     current->use_user_id,
+                    current->vidio_id,
                     current->real_vidio_id,
                     current->return_bool,
                     current->good,

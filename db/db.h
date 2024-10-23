@@ -56,6 +56,7 @@ typedef struct Real_Vidio_History {
     int id; // Auto인크리먼트 and pk
     int use_user_id; // 포링키 User(uqid)
     int real_vidio_id; // 포링키 Real_Vidio(id)
+    int vidio_id; // 포링키 Vidio(id)
     char return_bool; // 0 or 1
     char good; // 0~10
     time_t borrowed_date;
@@ -93,7 +94,7 @@ Real_Vidio *readRealVidio(int id);
 int updateRealVidio(Real_Vidio *realVidio);
 int deleteRealVidio(int id);
 
-int createRealVidioHistory(int use_user_id, int real_vidio_id, char return_bool, char good, time_t borrowed_date, time_t return_date);
+int createRealVidioHistory(int use_user_id, int real_vidio_id, int vidio_id, char return_bool);
 Real_Vidio_History *readRealVidioHistory(int id);
 int updateRealVidioHistory(Real_Vidio_History *history);
 int deleteRealVidioHistory(int id);

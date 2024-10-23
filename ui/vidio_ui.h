@@ -7,5 +7,6 @@
 
 void vidio_ui();
 void real_vidio_ui();
+void real_vidio_history_ui();
 
 #endif

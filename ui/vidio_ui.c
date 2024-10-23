@@ -151,7 +151,7 @@ void vidio_ui() {
         } else if (s == 4) { // 재고 관리
             real_vidio_ui();
         }else if(s==5){ // 대여기록, 히스토리 관련
-
+            real_vidio_history_ui();
         } else {
             break; // 뒤로가기
         }

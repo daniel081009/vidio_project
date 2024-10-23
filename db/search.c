@@ -21,7 +21,7 @@ UserSearchResult *search_user_all(wchar_t keyword[1000], User *head, int *result
         wchar_t decomposed_name[usernamelen * 3];
         decompose_hangul_string(current->name, decomposed_name);
 
-        int distance_name = jamo_set_similarity(decomposed_name, decomposed_keyword);
+        int distance_name = jamo_set_similarity(decomposed_name, decomposed_keyword); //TODO 검색 알고리즘 고도화
 
         results[i].u = current;
         results[i].distance = distance_name;

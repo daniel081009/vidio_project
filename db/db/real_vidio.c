@@ -64,7 +64,7 @@ int deleteRealVidio(int id) {
             Real_Vidio_History *history = historyList;
             while (history) {
                 if (history->real_vidio_id == id) {
-                    wprintf(L"오프라인 비디오 id %d는 삭제할 수 없음, \n", id);
+                    wprintf(L"오프라인 비디오 id %d는 삭제할 수 없음\n", id);
                     return -1;
                 }
                 history = history->next;
@@ -80,6 +80,6 @@ int deleteRealVidio(int id) {
         prev = current;
         current = current->next;
     }
-    wprintf(L"Real_Vidio with ID %d not found.\n", id);
+    wprintf(L"Real_Vidio ID %d를 찾을 수 없음\n", id);
     return -1;
 }

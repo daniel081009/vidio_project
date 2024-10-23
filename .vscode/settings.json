@@ -16,6 +16,7 @@
         "typeinfo": "c",
         "hangul.h": "c",
         "windows.h": "c",
-        "conio.h": "c"
+        "conio.h": "c",
+        "vidio_ui.h": "c"
     }
 }

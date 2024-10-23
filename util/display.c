@@ -1,7 +1,4 @@
 #include "display.h"
-#include <conio.h>
-#include <locale.h>
-#include <stdarg.h>
 
 void clearScreen() {
     system("@cls||clear");
@@ -60,7 +57,6 @@ void input_View(wchar_t prompt[100], wchar_t *output, size_t size) {
 void input_View_Char(wchar_t prompt[100], char *output) {
     wprintf(L"%ls : ", prompt);
     *output = getchar();
-    getchar();
 }
 
 void input_View_Int(wchar_t prompt[100], int *output) {

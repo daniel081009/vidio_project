@@ -1,7 +1,7 @@
 #ifndef db_h
 #define db_h
 
-#define DB_PATH "./db/"
+#define DB_PATH "./db_data/"
 #define DB_User_File "user.txt"
 #define DB_Vidio_File "vidio.txt"
 #define DB_Real_Vidio_File "real_vidio.txt"

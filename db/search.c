@@ -1,5 +1,5 @@
 #include "search.h"
-#include "hangul.h"
+#include "../util/hangul.h"
 
 const int usernamelen = 50;
 

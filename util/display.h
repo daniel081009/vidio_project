@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
-#include <conio.h>
+#include <stdarg.h>
+#include <locale.h>
+
 
 #define UP 72
 #define DOWN 80

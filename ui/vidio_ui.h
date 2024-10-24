@@ -6,6 +6,7 @@
 #include "../db/search.h"
 
 void vidio_ui();
+void vidio_vidio_ui();
 void real_vidio_ui();
 void real_vidio_history_ui();
 

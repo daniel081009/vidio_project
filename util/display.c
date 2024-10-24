@@ -7,11 +7,12 @@ void clearScreen() {
 void print_select_view(int idx, wchar_t array[][50], int size) {
     for (int i = 0; i < size; i++) {
         if (i == idx) {
-            wprintf(L"*  %ls\n", array[i]);
+            wprintf(L"*  %d. %ls\n", i+1,array[i]);
         } else {
-            wprintf(L"   %ls\n", array[i]);
+            wprintf(L"   %d.%ls\n", i+1,array[i]);
         }
     }
+    wprintf(L"esc - 뒤로가기 선택방법 1~%d 입력 or 화살표키",size);
 }
 
 int select_view(wchar_t title[50], wchar_t array[][50], int size) {
@@ -23,7 +24,14 @@ int select_view(wchar_t title[50], wchar_t array[][50], int size) {
         wprintf(L"%ls\n", title);
         print_select_view(ma, array, size);
         c = _getwch();
-        if (c == -32 || c == 0) {
+        if (c==27){
+            return max;
+        }else if (c >= '1' && c <= '9') {
+            int num = c - '0'; // 문자를 정수로 변환
+            if (num <= size) {
+                return num - 1; // 배열 인덱스는 0부터 시작하므로 1을 빼줌
+            }
+        } else if (c == -32 || c == 0) {
             c = _getwch();
             switch (c) {
                 case UP:
@@ -42,6 +50,7 @@ int select_view(wchar_t title[50], wchar_t array[][50], int size) {
         }
     }
 }
+
 
 void input_View(wchar_t prompt[100], wchar_t *output, size_t size) {
     wprintf(L"%ls : ", prompt);

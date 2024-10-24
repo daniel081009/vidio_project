@@ -196,7 +196,7 @@ void loadData() {
                        &history->return_bool,
                        &history->good,
                        &history->borrowed_date,
-                       &history->return_date) == 7) {
+                       &history->return_date) == 8) {
                 history->next = historyList;
                 historyList = history;
             } else {

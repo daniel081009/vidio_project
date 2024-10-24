@@ -12,19 +12,25 @@ void real_vidio_ui() {
         };
         int inv_s = select_view(inventory_title, inventory_sel, 4);
         if (inv_s == 0) { // 재고 추가
+            clearScreen();
             int vidio_id;
+            int len;
             input_View_Int(L"재고를 추가할 비디오 ID 입력", &vidio_id);
-            int real_vidio_id = createRealVidio(vidio_id);
-            if (real_vidio_id != -1) {
-                saveData();
-                wprintf(L"재고가 추가되었습니다. Real_Vidio ID = %d\n", real_vidio_id);
-            } else {
-                wprintf(L"재고 추가에 실패하였습니다.\n");
+            input_View_Int(L"재고를 추가할 개수", &len);
+
+            for (int i=0;i<len;i++){
+                int real_vidio_id = createRealVidio(vidio_id);
+                if (real_vidio_id != -1) {
+                    wprintf(L"재고가 추가되었습니다. Real_Vidio ID = %d\n", real_vidio_id);
+                } else {
+                    wprintf(L"재고 추가에 실패하였습니다.\n");
+                }
             }
+            saveData();
             wprintf(L"아무 키나 누르세요.");
             getchar();
-
         } else if (inv_s == 1) { // 재고 삭제
+            clearScreen();
             int real_vidio_id;
             input_View_Int(L"삭제할 재고의 Real_Vidio ID 입력", &real_vidio_id);
             int result = deleteRealVidio(real_vidio_id);
@@ -36,8 +42,8 @@ void real_vidio_ui() {
             }
             wprintf(L"아무 키나 누르세요.");
             getchar();
-
         } else if (inv_s == 2) { // 재고 리스트
+            clearScreen();
             Real_Vidio *current = realVidioList;
             while (current) {
                 wchar_t formatted_date[100];

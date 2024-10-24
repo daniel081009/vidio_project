@@ -56,6 +56,19 @@ int updateRealVidio(Real_Vidio *realVidio) {
     return 0;
 }
 
+int kkk(int id) {
+    Real_Vidio **node = &realVidioList;
+    while(*node) {
+        if((*node)->id = id) {
+            Real_Vidio *temp = *node;
+            *node = temp->next;
+            free(temp);
+            break;
+        }
+        node = &(*node)->next;
+    }
+}
+
 int deleteRealVidio(int id) {
     Real_Vidio *current = realVidioList;
     Real_Vidio *prev = NULL;

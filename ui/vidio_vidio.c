@@ -1,17 +1,15 @@
 #include "vidio_ui.h"
 
-
-
 void retrygetint(wchar_t *s,int *output,int min,int max) {
     while (1) {
-        input_View_Int(s, (int *)&output);
+        input_View_Int(s, output);
         if (min <= output <=max) break;
     }
 }
 
 void vidio_vidio_ui() {
     while(1) {
-        wchar_t title[50] = L"비디오 관리(진짜)";
+        wchar_t title[50] = L"비디오 데이터 관리";
         wchar_t sel[][50] = {
             L"추가",
             L"수정",

@@ -1,5 +1,16 @@
 #include "user_ui.h"
 
+typedef struct {
+    Vidio *u;
+    double good;
+} Vidio_good;
+
+static int compare_results_good(const void *a, const void *b) {
+    Vidio_good *vg1 = (Vidio_good *)a;
+    Vidio_good *vg2 = (Vidio_good *)b;
+    return vg2->good - vg1->good; 
+}
+
 void user_ui() {
     while(1) {
         wchar_t title[50]=L"사용자 관리";
@@ -9,10 +20,11 @@ void user_ui() {
             L"검색",
             L"삭제",
             L"사용자 리스트",
+            L"선호 비디오 추천",
             L"뒤로가기",
         };
 
-        int s =  select_view(title,sel,6);
+        int s =  select_view(title,sel,7);
         if (s==0) {
             clearScreen();
             wchar_t name[100];
@@ -115,6 +127,120 @@ void user_ui() {
                 wprintf(L"id: %d\n이름: %ls\n주소: %ls\n성별: %c\n출생 연도: %d\n----\n\n",current->uqid,current->name,current->address,current->man,current->birth_year);
                 current = current->next;
             }
+            wprintf(L"아무 키나 누르세요.");
+            getchar();
+        }else if (s==5) {
+            clearScreen();
+            int uqid;
+            input_View_Int(L"사용자 ID 입력", &uqid);
+
+            int *user_see_vidio_id_list = NULL;
+            int *user_see_vidio_good_list = NULL;
+            int capacity = 10; // 초기 용량
+            int count = 0;
+
+            user_see_vidio_id_list = (int *)malloc(capacity * sizeof(int));
+            user_see_vidio_good_list = (int *)malloc(capacity * sizeof(int));
+
+            if (user_see_vidio_id_list == NULL || user_see_vidio_good_list == NULL) {
+                wprintf(L"메모리 할당 실패\n");
+                return;
+            }
+
+            Real_Vidio_History *rvh = historyList;
+            while (rvh) {
+                if (rvh->use_user_id == uqid && rvh->return_bool == 1) {
+                    if (count >= capacity) {
+                        capacity *= 2;
+                        int *temp = realloc(user_see_vidio_id_list, capacity * sizeof(int));
+                        if (temp == NULL) {
+                            free(user_see_vidio_id_list);
+                            free(user_see_vidio_good_list);
+                            wprintf(L"메모리 재할당 실패\n");
+                            return;
+                        }
+                        user_see_vidio_id_list = temp;
+
+                        temp = realloc(user_see_vidio_good_list, capacity * sizeof(int));
+                        if (temp == NULL) {
+                            free(user_see_vidio_id_list);
+                            free(user_see_vidio_good_list);
+                            wprintf(L"메모리 재할당 실패\n");
+                            return;
+                        }
+                        user_see_vidio_good_list = temp;
+                    }
+                    user_see_vidio_id_list[count] = rvh->vidio_id;
+                    user_see_vidio_good_list[count] = rvh->good;
+                    count++;
+                }
+                rvh = rvh->next;
+            }
+
+            if (count+1 < 8) {
+                wprintf(L"예측하기 위해선 대여 기록이 8개 이상 필요합니다. 현재: %d개\n", count+1);
+                wprintf(L"아무 키나 누르세요.");
+                getchar();
+                continue;
+            }
+
+            Position_pre *data = (Position_pre *)malloc(count * sizeof(Position_pre));
+            if (data == NULL) {
+                free(user_see_vidio_id_list);
+                free(user_see_vidio_good_list);
+                wprintf(L"메모리 할당 실패\n");
+                return;
+            }
+
+            for (int i = 0; i < count; i++) {
+                Vidio *v = readVidio(user_see_vidio_id_list[i]);
+                data[i] = pos_to_pre(v->pos, user_see_vidio_good_list[i]);
+            }
+
+            double coefficients[8] = {0};
+            multiple_linear_regression(data, count, coefficients);
+
+            int total_vidio_count = lenvidio();
+            Vidio_good *results = (Vidio_good *)malloc(total_vidio_count * sizeof(Vidio_good));
+            if (results == NULL) {
+                free(user_see_vidio_id_list);
+                free(user_see_vidio_good_list);
+                free(data);
+                wprintf(L"메모리 할당 실패\n");
+                return;
+            }
+
+            int i = 0;
+            Vidio *v = vidioList;
+            while (v) {
+                results[i].u = v;
+                results[i].good = predict_rating(&v->pos, coefficients);
+                v = v->next;
+                i++;
+            }
+
+            qsort(results, i, sizeof(Vidio_good), compare_results_good);
+
+            int display = 0;
+            while (display < 3 && display < i) {
+                char sk=0;
+                for (int i = 0; i < count; i++) {
+                    if (results[display].u->id ==user_see_vidio_id_list[i]) {
+                        sk=1;
+                        break;
+                    }
+                }
+                if (sk==1) {display++;continue;};
+                wprintf(L"\n예측 평점: %.2f\n", results[display].good);
+                printcur(results[display].u);
+                display++;
+            }
+
+            free(user_see_vidio_id_list);
+            free(user_see_vidio_good_list);
+            free(data);
+            free(results);
+
             wprintf(L"아무 키나 누르세요.");
             getchar();
         }else {

@@ -3,22 +3,25 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <wchar.h>
+#include "user_ui.h"
 #include "../db/db.h"
 
-typedef struct Position_pre {
-    char horror;    // 0~10
-    char comedy;    // 0~10
-    char action;    // 0~10
-    char sf;        // 0~10
-    char fantasy;   // 0~10
-    char romance;   // 0~10
-    char family;    // 0~10
-    double rating;  // 평점 0~10 (종속 변수)
+typedef struct {
+    int action;    // 0~10
+    int comedy;    // 0~10
+    int family;    // 0~10
+    int fantasy;   // 0~10
+    int horror;    // 0~10
+    int romance;   // 0~10
+    int sf;        // 0~10
+    int rating;    // 평점 0~10 (종속 변수)
 } Position_pre;
 
-Position_pre pos_to_pre(Position pos,int good);
+// 함수 선언
+Position_pre pos_to_pre(Position pos, int good);
 void multiple_linear_regression(Position_pre *data, int n, double *coefficients);
-double predict_rating(const Position_pre *position, const double *coefficients);
+double predict_rating(const Position *position, const double *coefficients);
 
 void matrix_t(double **X, double **Xt, int n, int m);
 void matrix_mult(double **A, double **B, double **C, int n, int m, int p);

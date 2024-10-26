@@ -18,7 +18,7 @@ void printcur(Vidio *current) {
     Real_Vidio *rv=realVidioList;
     while (rv) {
         if (rv->vidio_id == current->id && rv->useing==1) rv_not_ret++;
-        rv_len++;
+        else if (rv->vidio_id== current->id)rv_len++;
         rv= rv->next;
     }
 

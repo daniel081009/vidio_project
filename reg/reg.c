@@ -1,16 +1,52 @@
 #include "reg.h"
 
-Position_pre pos_to_pre(Position pos,int good) {
-    Position_pre a;
-    a.action= pos.action;
-    a.comedy = pos.comedy;
-    a.family=pos.family;
-    a.fantasy=pos.fantasy;
-    a.horror=pos.horror;
-    a.romance=pos.romance;
-    a.sf= pos.sf;
-    a.rating=good;
+// 구조체 정의
+typedef struct {
+    Vidio *u;
+    double good; // 타입 변경
+} Vidio_good;
+
+// 비교 함수 수정
+int compare_results_good(const void *a, const void *b) {
+    Vidio_good *vg1 = (Vidio_good *)a;
+    Vidio_good *vg2 = (Vidio_good *)b;
+    if (vg2->good > vg1->good) return 1;
+    else if (vg2->good < vg1->good) return -1;
+    else return 0;
 }
+
+// pos_to_pre 함수
+Position_pre pos_to_pre(Position pos, int good) {
+    Position_pre a;
+    a.action = pos.action;
+    a.comedy = pos.comedy;
+    a.family = pos.family;
+    a.fantasy = pos.fantasy;
+    a.horror = pos.horror;
+    a.romance = pos.romance;
+    a.sf = pos.sf;
+    a.rating = good;
+    return a;
+}
+
+// expand_to_square 함수
+void expand_to_square(double **X, int n, int m) {
+    int square_size = (n > m) ? n : m;
+    for (int i = n; i < square_size; i++) {
+        for (int j = 0; j < m; j++) {
+            X[i][j] = X[i % n][j];
+        }
+    }
+}
+#include <stdio.h>
+#include <stdlib.h>
+#include <wchar.h>
+#include "reg.h"
+#include "user_ui.h"
+
+// 기존 구조체 및 함수 선언은 그대로 유지합니다.
+
+// multiple_linear_regression 함수 수정
 void multiple_linear_regression(Position_pre *data, int n, double *coefficients) {
     int i, j;
     int m = 8; // 독립 변수 수 + 절편 항
@@ -46,24 +82,24 @@ void multiple_linear_regression(Position_pre *data, int n, double *coefficients)
         Y[i] = data[i].rating;
     }
 
-    // Xt
+    // Xt 계산
     matrix_t(X, Xt, n, m);
 
-    // Xt * X
+    // Xt * X 계산
     matrix_mult(Xt, X, XtX, m, n, m);
 
-    // Xt * Y
+    // Xt * Y 계산
     matrix_vector_multiply(Xt, Y, XtY, m, n);
 
-    // (Xt * X)^-1 
+    // (Xt * X)^-1 계산
     if (matrix_inverse(XtX, inv_XtX, m) == 0) {
-        wprintf(L"역행렬을 구할수 없습니다.\n");
-        return;
+        wprintf(L"역행렬을 구할 수 없습니다.\n");
+        goto cleanup;
     }
-
-    //(XtX)^(-1) * XtY
+    //(Xt * X)^-1 * Xt*Y
     matrix_vector_multiply(inv_XtX, XtY, coefficients, m, m);
-
+cleanup:
+    // 메모리 해제
     for (i = 0; i < n; i++) {
         free(X[i]);
     }
@@ -80,8 +116,8 @@ void multiple_linear_regression(Position_pre *data, int n, double *coefficients)
     free(XtY);
 }
 
-double predict_rating(const Position_pre *position, const double *coefficients) {
-    //coefficients[0] + coefficients[1] * horror + ...
+// predict_rating 함수 수정
+double predict_rating(const Position *position, const double *coefficients) {
     double prediction = coefficients[0] +
                         coefficients[1] * position->horror +
                         coefficients[2] * position->comedy +
@@ -90,10 +126,13 @@ double predict_rating(const Position_pre *position, const double *coefficients) 
                         coefficients[5] * position->fantasy +
                         coefficients[6] * position->romance +
                         coefficients[7] * position->family;
+
+    // 디버깅 출력: 예측 값 확인
+    printf("예측 값 계산: %f\n", prediction);
     return prediction;
 }
 
-// 행렬 전치 함수 구현
+// 행렬 전치 함수
 void matrix_t(double **X, double **Xt, int n, int m) {
     int i, j;
     for (i = 0; i < m; i++) {
@@ -103,7 +142,7 @@ void matrix_t(double **X, double **Xt, int n, int m) {
     }
 }
 
-// 행렬곱
+// 행렬곱 함수
 void matrix_mult(double **A, double **B, double **C, int n, int m, int p) {
     int i, j, k;
     for (i = 0; i < n; i++) {
@@ -116,7 +155,7 @@ void matrix_mult(double **A, double **B, double **C, int n, int m, int p) {
     }
 }
 
-// 행렬-벡터 곱
+// 행렬-벡터 곱 함수
 void matrix_vector_multiply(double **A, double *B, double *C, int n, int m) {
     int i, j;
     for (i = 0; i < n; i++) {
@@ -127,7 +166,7 @@ void matrix_vector_multiply(double **A, double *B, double *C, int n, int m) {
     }
 }
 
-// 가우스-조르단 소거법
+// 행렬 역행렬 함수
 int matrix_inverse(double **A, double **inverse, int n) {
     int i, j, k;
     double temp;
@@ -151,7 +190,6 @@ int matrix_inverse(double **A, double **inverse, int n) {
             int swapped = 0;
             for (k = i + 1; k < n; k++) {
                 if (aug[k][i] != 0) {
-                    // 행 교환
                     double *temp_row = aug[i];
                     aug[i] = aug[k];
                     aug[k] = temp_row;
@@ -168,7 +206,7 @@ int matrix_inverse(double **A, double **inverse, int n) {
             }
         }
 
-        // 피벗을 1로 
+        // 피벗을 1로
         temp = aug[i][i];
         for (j = 0; j < 2 * n; j++) {
             aug[i][j] /= temp;
@@ -185,7 +223,7 @@ int matrix_inverse(double **A, double **inverse, int n) {
         }
     }
 
-    // 역행렬 그려줌
+    // 역행렬 복사
     for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++) {
             inverse[i][j] = aug[i][j + n];

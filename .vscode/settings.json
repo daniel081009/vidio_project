@@ -17,6 +17,8 @@
         "hangul.h": "c",
         "windows.h": "c",
         "conio.h": "c",
-        "vidio_ui.h": "c"
+        "vidio_ui.h": "c",
+        "user_ui.h": "c",
+        "reg.h": "c"
     }
 }

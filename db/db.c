@@ -6,6 +6,7 @@ Real_Vidio *realVidioList = NULL;
 Real_Vidio_History *historyList = NULL;
 Position *positionList = NULL;
 
+
 void freeAllData() {
     User *userCurrent = userList;
     while (userCurrent) {

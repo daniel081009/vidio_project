@@ -2,7 +2,11 @@
 
 int user_last_uqid() {
     User *current = userList;
-    int max_uqid = 0;
+    static int max_uqid = 0;
+    if (max_uqid != 0) {
+        max_uqid=max_uqid+1;
+        return max_uqid;
+    }
     while (current) {
         if (current->uqid > max_uqid) {
             max_uqid = current->uqid;
@@ -11,6 +15,7 @@ int user_last_uqid() {
     }
     return max_uqid;
 }
+
 int lenUser() {
     User *current = userList;
     int index = 0;

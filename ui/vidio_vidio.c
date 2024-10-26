@@ -7,6 +7,33 @@ void retrygetint(wchar_t *s,int *output,int min,int max) {
     }
 }
 
+void printcur(Vidio *current) {
+    wchar_t formatted_date[100];
+    print_formatted_date(current->create_date, formatted_date, 100);
+
+    wprintf(L"ID: %d\n이름: %ls\n설명: %ls\n생성 날짜: %ls\n", 
+            current->id, current->name, current->desc, formatted_date);
+    int rv_len = 0;
+    int rv_not_ret =0;
+    Real_Vidio *rv=realVidioList;
+    while (rv) {
+        if (rv->vidio_id == current->id && rv->useing==1) rv_not_ret++;
+        rv_len++;
+        rv= rv->next;
+    }
+
+    wprintf(L"재고: %d\n대여중인 재고: %d\n",rv_len,rv_not_ret);
+    wprintf(L"장르:\n");
+    wprintf(L"  공포: %d\n", current->pos.horror);
+    wprintf(L"  코미디: %d\n", current->pos.comedy);
+    wprintf(L"  액션: %d\n", current->pos.action);
+    wprintf(L"  SF: %d\n", current->pos.sf);
+    wprintf(L"  판타지: %d\n", current->pos.fantasy);
+    wprintf(L"  로맨스: %d\n", current->pos.romance);
+    wprintf(L"  가족: %d\n", current->pos.family);
+    wprintf(L"----\n\n");
+}
+
 void vidio_vidio_ui() {
     while(1) {
         wchar_t title[50] = L"비디오 데이터 관리";
@@ -134,27 +161,30 @@ void vidio_vidio_ui() {
                 getchar();
             } else {
                 while (current) {
-                    wchar_t formatted_date[100];
-                    print_formatted_date(current->create_date, formatted_date, 100);
-
-                    wprintf(L"ID: %d\n이름: %ls\n설명: %ls\n생성 날짜: %ls\n", 
-                            current->id, current->name, current->desc, formatted_date);
-                    wprintf(L"장르:\n");
-                    wprintf(L"  공포: %d\n", current->pos.horror);
-                    wprintf(L"  코미디: %d\n", current->pos.comedy);
-                    wprintf(L"  액션: %d\n", current->pos.action);
-                    wprintf(L"  SF: %d\n", current->pos.sf);
-                    wprintf(L"  판타지: %d\n", current->pos.fantasy);
-                    wprintf(L"  로맨스: %d\n", current->pos.romance);
-                    wprintf(L"  가족: %d\n", current->pos.family);
-                    wprintf(L"----\n\n");
+                    printcur(current);
                     current = current->next;
                 }
                 wprintf(L"아무 키나 누르세요.");
                 getchar();
             }
-        }else if (s==4){ // TODO: 검색기능
-            
+        }else if (s==4){
+            clearScreen();
+            wchar_t name[1000];
+            input_View(L"검색어", name, 50);
+            int reslen = 0;
+            VidioSearchResult *res = search_vidio_all(name, vidioList, &reslen);
+            qsort(res, reslen, sizeof(VidioSearchResult), compare_results);
+
+            wprintf(L"\n\n");
+            int displayed = 0;
+            while (displayed < 5 && displayed < reslen) {
+                printcur(res[displayed].u);
+                displayed++;
+            }
+
+            wprintf(L"아무 키나 누르세요.");
+            getchar();
+
         }else{
             break;
         }

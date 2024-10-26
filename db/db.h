@@ -78,12 +78,14 @@ int vidio_last_uqid();
 int realvidio_last_uqid();
 int realvidiohistory_last_id();
 
-int lenUser();
+int lenuser();
 int createUser(wchar_t *name, wchar_t *address, char man, int birth_year);
 User *readUser(int uqid);
 int updateUser(User *user);
 int deleteUser(int uqid);
 
+
+int lenvidio();
 int createVidio(wchar_t *name, wchar_t *desc, Position pos);
 Vidio *readVidio(int id);
 int updateVidio(Vidio *vidio);

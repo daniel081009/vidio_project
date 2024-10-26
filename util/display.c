@@ -1,4 +1,5 @@
 #include "display.h"
+#include <conio.h>
 
 void clearScreen() {
     system("@cls||clear");

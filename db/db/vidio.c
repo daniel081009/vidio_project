@@ -12,6 +12,16 @@ int vidio_last_uqid() {
     return max_id;
 }
 
+int lenvidio() {
+    int index =0;
+    Vidio *current = vidioList;
+    while (current) {
+        index++;
+        current = current->next;
+    }
+    return index;
+}
+
 int createVidio(wchar_t *name, wchar_t *desc, Position pos) {
     int id = vidio_last_uqid() + 1;
     Vidio *vidio = (Vidio *)malloc(sizeof(Vidio));

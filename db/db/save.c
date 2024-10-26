@@ -1,4 +1,5 @@
 #include "../db.h"
+#include <wchar.h>
 
 void saveData() {
     FILE *file = _wfopen(DB_PATH L"" DB_User_File, L"w, ccs=UTF-8");

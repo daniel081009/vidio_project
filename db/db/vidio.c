@@ -29,6 +29,11 @@ int createVidio(wchar_t *name, wchar_t *desc, Position pos) {
     vidio->id = id;
     wcsncpy(vidio->name, name, 100);
     vidio->name[100] = L'\0';
+     Vidio *v = vidioList;
+    while (v) {
+        if (v->name==vidio->name) return -1;
+        v= v->next;
+    }
     wcsncpy(vidio->desc, desc, 1000);
     vidio->desc[1000] = L'\0';
     vidio->pos = pos;

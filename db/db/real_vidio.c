@@ -78,7 +78,8 @@ int deleteRealVidio(int id) {
             while (history) {
                 if (history->real_vidio_id == id) {
                     wprintf(L"오프라인 비디오 id %d는 삭제할 수 없음\n", id);
-                    return -1;
+                    current->useing=1;
+                    return 0;
                 }
                 history = history->next;
             }
